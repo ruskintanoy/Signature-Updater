@@ -166,6 +166,11 @@ $updateBtn.Add_Click({
                 continue
             }
 
+            if ($adUser.Enabled -ne $true) {
+                Write-Log "Skipping disabled account: $($user.UserPrincipalName)"
+                continue
+            }
+
             $firstName = $adUser.GivenName
             $lastName  = $adUser.Surname
             $title     = $adUser.GetUnderlyingObject().Properties["title"].Value
