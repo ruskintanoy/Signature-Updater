@@ -1,0 +1,5 @@
+
+Import-Module ExchangeOnlineManagement
+Connect-ExchangeOnline
+
+Get-OrganizationConfig | Format-List PostponeRoamingSignaturesUntilLater

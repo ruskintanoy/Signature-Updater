@@ -73,7 +73,7 @@ $form.Controls.Add($updateBtn)
 # Signature logic
 $updateBtn.Add_Click({
 
-    Write-Log "Connecting to Exchange Online..."
+    Write-Log "Connecting to Exchange Online."
     try {
         Import-Module ExchangeOnlineManagement -ErrorAction Stop
         Connect-ExchangeOnline -ShowBanner:$false -ErrorAction Stop
@@ -95,11 +95,11 @@ $updateBtn.Add_Click({
 
     $orgConfig = Get-OrganizationConfig
     if (-not $orgConfig.PostponeRoamingSignaturesUntilLater) {
-        Write-Log "Enabling roaming signature support..."
+        Write-Log "Enabling roaming signature support."
         Set-OrganizationConfig -PostponeRoamingSignaturesUntilLater $true
-        Write-Log "Roaming signature support enabled."
+        Write-Log "Roaming signatures disabled."
     } else {
-        Write-Log "Roaming signature already enabled."
+        Write-Log "Roaming signature already disabled."
     }
 
     $users = @()
@@ -177,11 +177,6 @@ $updateBtn.Add_Click({
             $mobile    = $adUser.VoiceTelephoneNumber
             $email     = $adUser.EmailAddress
 
-            if (-not $firstName) { $firstName = $adUser.DisplayName }
-            if (-not $lastName)  { $lastName = "" }
-            if (-not $title)     { $title = "Team Member" }
-            if (-not $mobile)    { $mobile = "(n/a)" }
-
             $signatureHtml = $signatureTemplate
             $signatureHtml = $signatureHtml -replace "%%FirstName%%", $firstName
             $signatureHtml = $signatureHtml -replace "%%LastName%%", $lastName
@@ -195,6 +190,13 @@ $updateBtn.Add_Click({
                 -AutoAddSignatureOnMobile $true `
                 -AutoAddSignatureOnReply $true `
                 -ErrorAction Stop
+
+            $cfg = Get-MailboxMessageConfiguration -Identity $user.UserPrincipalName
+
+            Write-Log ("Verified: AutoAdd={0}, Reply={1}, Mobile={2}, SigLength={3}" -f `
+                $cfg.AutoAddSignature, $cfg.AutoAddSignatureOnReply, $cfg.AutoAddSignatureOnMobile, `
+                ($cfg.SignatureHTML | Measure-Object -Character).Characters
+            )
 
             Write-Log "Signature updated: $($user.UserPrincipalName)"
         } catch {
