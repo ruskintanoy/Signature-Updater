@@ -1,20 +1,22 @@
-Add-Type -AssemblyName System.DirectoryServices.AccountManagement
-$ctx  = New-Object System.DirectoryServices.AccountManagement.PrincipalContext([System.DirectoryServices.AccountManagement.ContextType]::Domain)
-$user = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($ctx, $env:USERNAME)
+$identity = "chrisr@spaar.ca" 
+$other = [System.DirectoryServices.AccountManagement.UserPrincipal]::FindByIdentity($ctx, $identity)
 
-$uad = $user.GetUnderlyingObject() # DirectoryEntry
+if (-not $other) { throw "User not found: $identity" }
+
+$uadOther = $other.GetUnderlyingObject()
 
 [pscustomobject]@{
-    SamAccountName = $user.SamAccountName
-    UPN            = $user.UserPrincipalName
-    DisplayName    = $user.DisplayName
-    GivenName      = $user.GivenName
-    Surname        = $user.Surname
-    EmailAddress   = $user.EmailAddress
-    VoiceTel_UP    = $user.VoiceTelephoneNumber      
-    Mobile_UP      = $user.MobilePhone               
-    Title_LDAP     = $uad.Properties["title"].Value
-    Mobile_LDAP    = $uad.Properties["mobile"].Value
-    Tel_LDAP       = $uad.Properties["telephoneNumber"].Value
-    IPPhone_LDAP   = $uad.Properties["ipPhone"].Value
+    SamAccountName = $other.SamAccountName
+    UPN            = $other.UserPrincipalName
+    DisplayName    = $other.DisplayName
+    Enabled        = $other.Enabled
+    GivenName      = $other.GivenName
+    Surname        = $other.Surname
+    EmailAddress   = $other.EmailAddress
+    VoiceTel_UP    = $other.VoiceTelephoneNumber
+    Mobile_UP      = $other.MobilePhone
+    Title_LDAP     = $uadOther.Properties["title"].Value
+    Mobile_LDAP    = $uadOther.Properties["mobile"].Value
+    Tel_LDAP       = $uadOther.Properties["telephoneNumber"].Value
+    IPPhone_LDAP   = $uadOther.Properties["ipPhone"].Value
 }
