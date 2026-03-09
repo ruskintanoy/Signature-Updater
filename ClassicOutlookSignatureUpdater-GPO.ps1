@@ -57,11 +57,11 @@ $html | Set-Content -Path $htmlPath -Encoding UTF8
 "{\rtf1\ansi\ansicpg1252 {\fonttbl\f0\fswiss Calibri;}\f0\fs22 $($userProps.GivenName) $($userProps.Surname) \line $($userProps.Title)}" | Set-Content -Path $rtfPath
 
 # Set signature as default
-$regPath = "HKCU:\Software\Microsoft\Office\16.0\Common\MailSettings"
-if (Test-Path $regPath) {
-    Set-ItemProperty -Path $regPath -Name NewSignature   -Value $signatureName
-    Set-ItemProperty -Path $regPath -Name ReplySignature -Value $signatureName
-    Write-Host "Signature set as default for $($userProps.SamAccountName)"
-} else {
-    Write-Warning "Registry path for Outlook signatures not found."
-}
+# $regPath = "HKCU:\Software\Microsoft\Office\16.0\Common\MailSettings"
+# if (Test-Path $regPath) {
+#     Set-ItemProperty -Path $regPath -Name NewSignature   -Value $signatureName
+#     Set-ItemProperty -Path $regPath -Name ReplySignature -Value $signatureName
+#     Write-Host "Signature set as default for $($userProps.SamAccountName)"
+# } else {
+#     Write-Warning "Registry path for Outlook signatures not found."
+# }
