@@ -56,6 +56,8 @@ $html | Set-Content -Path $htmlPath -Encoding UTF8
 "$($userProps.GivenName) $($userProps.Surname) - $($userProps.Title)" | Set-Content -Path $txtPath
 "{\rtf1\ansi\ansicpg1252 {\fonttbl\f0\fswiss Calibri;}\f0\fs22 $($userProps.GivenName) $($userProps.Surname) \line $($userProps.Title)}" | Set-Content -Path $rtfPath
 
+
+// Optional: Set signature as default for new emails and replies (Prevents user from editing signature if enabled)
 # Set signature as default
 # $regPath = "HKCU:\Software\Microsoft\Office\16.0\Common\MailSettings"
 # if (Test-Path $regPath) {
