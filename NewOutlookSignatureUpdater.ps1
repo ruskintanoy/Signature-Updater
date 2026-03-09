@@ -191,13 +191,6 @@ $updateBtn.Add_Click({
                 -AutoAddSignatureOnReply $true `
                 -ErrorAction Stop
 
-            $cfg = Get-MailboxMessageConfiguration -Identity $user.UserPrincipalName
-
-            Write-Log ("Verified: AutoAdd={0}, Reply={1}, Mobile={2}, SigLength={3}" -f `
-                $cfg.AutoAddSignature, $cfg.AutoAddSignatureOnReply, $cfg.AutoAddSignatureOnMobile, `
-                ($cfg.SignatureHTML | Measure-Object -Character).Characters
-            )
-
             Write-Log "Signature updated: $($user.UserPrincipalName)"
         } catch {
             Write-Log "Failed for $($user.UserPrincipalName): $($_.Exception.Message)"
