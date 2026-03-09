@@ -40,7 +40,7 @@ New-ItemProperty -Path $setupRegPath `
 Write-Host "Disabled roaming signatures for $($userProps.SamAccountName)"
 
 # Load signature template
-$templatePath = "\\prodc03\SYSVOL\prophit.local\scripts\Signature Updater\SignatureTemplate.html"
+$templatePath = Join-Path -Path $PSScriptRoot -ChildPath "SignatureTemplate.html"
 if (-Not (Test-Path $templatePath)) {
     Write-Error "Signature template not found at $templatePath"
     exit 1
