@@ -24,6 +24,21 @@ $userProps = [PSCustomObject]@{
     SamAccountName  = $user.SamAccountName
 }
 
+# Disable Classic Outlook roaming signatures
+$setupRegPath = "HKCU:\Software\Microsoft\Office\16.0\Outlook\Setup"
+
+if (-not (Test-Path $setupRegPath)) {
+    New-Item -Path $setupRegPath -Force | Out-Null
+}
+
+New-ItemProperty -Path $setupRegPath `
+    -Name "DisableRoamingSignaturesTemporaryToggle" `
+    -PropertyType DWord `
+    -Value 1 `
+    -Force | Out-Null
+
+Write-Host "Disabled roaming signatures for $($userProps.SamAccountName)"
+
 # Load signature template
 $templatePath = "\\prodc03\SYSVOL\prophit.local\scripts\Signature Updater\SignatureTemplate.html"
 if (-Not (Test-Path $templatePath)) {
@@ -57,7 +72,7 @@ $html | Set-Content -Path $htmlPath -Encoding UTF8
 "{\rtf1\ansi\ansicpg1252 {\fonttbl\f0\fswiss Calibri;}\f0\fs22 $($userProps.GivenName) $($userProps.Surname) \line $($userProps.Title)}" | Set-Content -Path $rtfPath
 
 
-// Optional: Set signature as default for new emails and replies (Prevents user from editing signature if enabled)
+# Optional: Set signature as default for new emails and replies (Prevents user from editing signature if enabled)
 # Set signature as default
 # $regPath = "HKCU:\Software\Microsoft\Office\16.0\Common\MailSettings"
 # if (Test-Path $regPath) {
