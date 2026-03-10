@@ -74,11 +74,11 @@ $html | Set-Content -Path $htmlPath -Encoding UTF8
 
 # Optional: Set signature as default for new emails and replies (Prevents user from editing signature if enabled)
 # Set signature as default
-# $regPath = "HKCU:\Software\Microsoft\Office\16.0\Common\MailSettings"
-# if (Test-Path $regPath) {
-#     Set-ItemProperty -Path $regPath -Name NewSignature   -Value $signatureName
-#     Set-ItemProperty -Path $regPath -Name ReplySignature -Value $signatureName
-#     Write-Host "Signature set as default for $($userProps.SamAccountName)"
-# } else {
-#     Write-Warning "Registry path for Outlook signatures not found."
-# }
+$regPath = "HKCU:\Software\Microsoft\Office\16.0\Common\MailSettings"
+if (Test-Path $regPath) {
+    Set-ItemProperty -Path $regPath -Name NewSignature   -Value $signatureName
+    Set-ItemProperty -Path $regPath -Name ReplySignature -Value $signatureName
+    Write-Host "Signature set as default for $($userProps.SamAccountName)"
+} else {
+    Write-Warning "Registry path for Outlook signatures not found."
+}
