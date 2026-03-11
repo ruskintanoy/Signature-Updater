@@ -148,7 +148,7 @@ $updateBtn.Add_Click({
         return
     }
 
-    $templatePath = Join-Path $PSScriptRoot "SignatureTemplate.html"
+    $templatePath = Join-Path $PSScriptRoot "SignatureTemplate-NewOutlook.html"
     if (-not (Test-Path $templatePath)) {
         Write-Log "Template file not found."
         return
